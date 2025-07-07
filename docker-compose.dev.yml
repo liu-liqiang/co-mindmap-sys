@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 数据库
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mindmap_db}
+      POSTGRES_USER: ${POSTGRES_USER:-mindmap_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mindmap_network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - mindmap_network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+  # Django 后端 - 开发模式（代码挂载）
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-mindmap_user}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-mindmap_db}
+      - REDIS_URL=redis://redis:6379/0
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app  # 📁 代码挂载 - 实时修改
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    networks:
+      - mindmap_network
+    command: python manage.py runserver 0.0.0.0:8000
+
+  # Vue.js 前端 - 开发模式（代码挂载）
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app  # 📁 代码挂载 - 实时修改
+      - /app/node_modules  # 防止本地node_modules覆盖容器内的
+    networks:
+      - mindmap_network
+    command: npm run dev -- --host 0.0.0.0 --port 3000
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:
+
+networks:
+  mindmap_network:
+    driver: bridge

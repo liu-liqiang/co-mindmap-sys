@@ -1,0 +1,28 @@
+Django==5.2.3
+djangorestframework==3.16.0
+django-cors-headers==4.7.0
+channels==4.2.2
+channels-redis==4.2.1
+django-filter==25.1
+redis==6.2.0
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
+
+# 人脸识别相关依赖
+Pillow>=11.0.0
+numpy>=2.0.0
+
+# JWT认证相关依赖
+PyJWT>=2.8.0
+
+# 生产环境依赖
+whitenoise==6.6.0
+python-dotenv==1.0.0
+django-extensions==3.2.3
+
+# 安全相关
+django-secure==1.0.2
+django-ratelimit==4.1.0
+
+# 监控和日志
+django-debug-toolbar==4.2.0
