@@ -89,7 +89,10 @@ api.interceptors.response.use(
 // 用户相关API
 export const userAPI = {
   // 获取CSRF token
-  initCSRF: () => axios.get('http://localhost:8000/api/csrf/', { withCredentials: true }),
+  initCSRF: () => axios.get('http://localhost:8000/api/csrf/', {
+    withCredentials: true
+  }),
+
 
   // 第一步：账号密码登录
   login: async (data: { police_number: string; password: string }) => {

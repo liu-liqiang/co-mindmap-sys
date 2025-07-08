@@ -4,7 +4,7 @@
       <template #header>
         <h2>系统调试工具</h2>
       </template>
-      
+
       <el-space direction="vertical" size="large" style="width: 100%">
         <!-- CSRF 测试 -->
         <el-card>
@@ -89,8 +89,8 @@ const showCSRFToken = () => {
 const testLogin = async () => {
   try {
     testResults.value = '正在测试登录...'
-    const response = await userAPI.login({ username: 'admin', password: 'admin' })
-    testResults.value = `登录测试成功:\n${JSON.stringify(response.data, null, 2)}`
+    // const response = await userAPI.login({ username: 'admin', password: 'admin' })
+    // testResults.value = `登录测试成功:\n${JSON.stringify(response.data, null, 2)}`
     ElMessage.success('登录测试成功')
   } catch (error: any) {
     testResults.value = `登录测试失败:\n${JSON.stringify(error.response?.data || error.message, null, 2)}`

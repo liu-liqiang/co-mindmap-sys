@@ -657,7 +657,7 @@ const handleUpload = async () => {
           projectId.value,
           fileToUpload,
           uploadForm.value.description,
-          fileToUpload.name // 显式传递原始文件名
+          // fileToUpload.name // 显式传递原始文件名
         )
         successCount++
       } catch (err: any) {

@@ -21,9 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-(w%#1a(4g^^$qow0=fu84zfx3i@*ad4!5y%ni&(o*%gq6i&72_')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'abJU#$JJJJJsadfFSSewADF^&*(-ASFEHTNRR7jkFGHIJKLMlmnopqrstuvwxyzAB2345678CDENOPQ5$#ghiRSTUVWXYZ019!@_=+)')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else ['localhost', '[::1]']
 
 
 # Application definition
@@ -164,10 +164,17 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'False') == 'True'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 
 # CSRF配置
 CSRF_TRUSTED_ORIGINS = [
-    origin for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+] + [
+    origin for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin 
 ]
 
 # Session和CSRF Cookie配置
@@ -183,6 +190,8 @@ CSRF_COOKIE_HTTPONLY = os.environ.get('CSRF_COOKIE_HTTPONLY', 'False') == 'True'
 CSRF_COOKIE_DOMAIN = os.environ.get('CSRF_COOKIE_DOMAIN', None)
 CSRF_COOKIE_AGE = int(os.environ.get('CSRF_COOKIE_AGE', 31449600))
 CSRF_USE_SESSIONS = os.environ.get('CSRF_USE_SESSIONS', 'False') == 'True'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # 自定义用户模型
 AUTH_USER_MODEL = 'users.CustomUser'

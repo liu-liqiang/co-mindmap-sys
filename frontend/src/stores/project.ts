@@ -111,7 +111,7 @@ export const useProjectStore = defineStore('project', () => {
   }
 
   // 更新项目
-  const updateProject = async (id: number, data: Partial<{ name: string; case_number: string; filing_unit: string; case_summary: string }>) => {
+  const updateProject = async (id: number, data: Partial<{ name: string; case_number: string; filing_unit: string; case_summary: string; case_amount: number | null }>) => {
     try {
       const response = await projectAPI.update(id, data)
       currentProject.value = response.data

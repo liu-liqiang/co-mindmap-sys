@@ -70,12 +70,6 @@ const router = createRouter({
       component: () => import('../views/NotFoundView.vue')
     },
     {
-      path: '/face-verify/:user',
-      name: 'face-verify',
-      component: () => import('../views/FaceVerifyView.vue'),
-      meta: { guest: true }
-    },
-    {
       path: '/face-register',
       name: 'FaceRegister',
       component: () => import('../views/FaceRegisterView.vue'),
